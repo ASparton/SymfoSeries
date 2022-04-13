@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Explore{% endblock %}
+
+{% block body %}
+	<div class="container">
+
+		<h1>Explore series</h1>
+
+		<!-- Search filtrers -->
+		{% include 'series/_filter.html.twig' with {form : form} only %}
+
+		<!-- sort by alphabet, date or rating -->
+		<article class="d-flex justify-content-start mb">
+			{{ knp_pagination_sortable(serie, 'By alphabet', 's.title' )}}
+			{{ knp_pagination_sortable(serie, 'By date', 's.yearStart' )}}
+			{% if app.user %}
+				{{ knp_pagination_sortable(serie, 'By rating', 'r.value' )}}
+			{% endif %}
+		</article>
+
+		<article class="row">
+
+			<div class="grid">
+				{% for serie in serie %}
+					{% include 'series/_preview.html.twig' with {serie: serie} only %}
+				{% endfor %}
+			</div>
+			<section class="mt-2">
+				{{ knp_pagination_render(serie) }}
+			</section>
+		</article>
+	</div>
+
+{% endblock %}
